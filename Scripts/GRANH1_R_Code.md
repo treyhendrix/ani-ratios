@@ -1,5 +1,5 @@
-R Code for No evidence for adaptive sex ratio adjustment in a
-cooperatively breeding bird with helpful helpers
+R Code for “No evidence for adaptive sex ratio adjustment in a
+cooperatively breeding bird with helpful helpers”
 ================
 Trey Hendrix
 
@@ -136,7 +136,7 @@ repository. The structure of the data frame is:
 
 ``` r
 file_path_to_GRANH1_csv <- "/Users/Trey/Documents/All Files/PhD Research/GRANH1/Ani Data Mining R Project/Data/GRANH1_anon_221123.csv" # local file path that will not work on your machine
-# This will be updated when the data set is publically released 
+# This will be updated when the data set is publicly released 
 ```
 
 The structure of these data set is:

@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers"
+#' title: R Code for "No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers"
 #' author: |
 #'   Trey Hendrix
 #' date: | 
@@ -43,7 +43,7 @@ sessionInfo()
 #' The data set analyzed in this study will be made publicly available in the Figshare repository upon publication. The DOI [doi.org/10.6084/m9.figshare.21760979](http://doi.org/10.6084/m9.figshare.21760979) has been reserved, and it will become active if the paper is accepted for publication. We apologize for any inconvenience. The data file necessary to reproduce these analyses is named "GRANH1_anon_221123.csv" and, although it is not currently publicly available, its contents are described in a "README" document in the "Data" folder of this repository. The structure of the data frame is: 
 ## ----Data Path----------------------------------------------------------------
 file_path_to_GRANH1_csv <- "/Users/Trey/Documents/All Files/PhD Research/GRANH1/Ani Data Mining R Project/Data/GRANH1_anon_221123.csv" # local file path that will not work on your machine
-# This will be updated when the data set is publically released 
+# This will be updated when the data set is publicly released 
 
 #' The structure of these data set is: 
 ## ----Data frame structure-----------------------------------------------------
