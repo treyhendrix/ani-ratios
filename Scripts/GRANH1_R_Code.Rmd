@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This document contains the R code used to produce the analyses, figures, and supplemental material for the manuscript titled "No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers." This manuscript is currently under peer review. 
+This document contains the R code used to produce the analyses, figures, and supplemental material for the manuscript titled "No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers." The complete list of authors is Trey C. Hendrix and Christina Riehl. This manuscript is currently under peer review. 
 
 # Required Packages
 ```{r Packages}
