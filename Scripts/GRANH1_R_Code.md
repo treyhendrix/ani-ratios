@@ -2,6 +2,7 @@ R Code for No evidence for adaptive sex ratio adjustment in a
 cooperatively breeding bird with helpful helpers
 ================
 Trey Hendrix
+
 Updated: 2023-03-06
 
 - <a href="#required-packages" id="toc-required-packages">Required
@@ -47,7 +48,8 @@ knitr::opts_chunk$set(
 This document contains the R code used to produce the analyses, figures,
 and supplemental material for the manuscript titled “No evidence for
 adaptive sex ratio adjustment in a cooperatively breeding bird with
-helpful helpers.” This manuscript is currently under peer review.
+helpful helpers.” The complete list of authors is Trey C. Hendrix and
+Christina Riehl. This manuscript is currently under peer review.
 
 # Required Packages
 
@@ -121,7 +123,7 @@ sessionInfo()
 # Data
 
 The data set analyzed in this study will be made publicly available in
-the figshare repository upon publication. The DOI
+the Figshare repository upon publication. The DOI
 [doi.org/10.6084/m9.figshare.21760979](http://doi.org/10.6084/m9.figshare.21760979)
 has been reserved, and it will become active if the paper is accepted
 for publication. We apologize for any inconvenience. The data file

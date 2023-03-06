@@ -1,7 +1,9 @@
 ---
 title: "R Code for No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers"
-author: "Trey Hendrix"
-date: 'Updated: 2023-03-06'
+author: |
+  Trey Hendrix
+date: | 
+  Updated: 2023-03-06
 output: 
   github_document:
     toc: true
