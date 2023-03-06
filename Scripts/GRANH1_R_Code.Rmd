@@ -447,14 +447,14 @@ table_s1 %>%
   kable()
 ```
 
-```{r saving table s1}
+```{r Saving table s1}
 write_csv(table_s1, paste0(output_file_path, "/Table_S1.csv"))
 ```
 
 
 ## Figure 2
 Sex ratio of nestlings with respect to (a) whether or not a helper was observed at their nest and (b) position in hatch order. In both, error bars show 95% confidence intervals, the dotted line indicates a 50:50 sex ratio, and the number of nestlings sexed in each year is shown above each error bar.
-```{r Hypothesis figure}
+```{r Figure 2}
 helper_plot <- df %>%
   filter(!is.na(Helper_presence)) %>% 
   group_by(Helper_presence) %>%
@@ -503,7 +503,7 @@ ggsave(paste0(output_file_path, "/Figure_2.pdf"), figure_2, width = 7, height = 
 ## Table S2
 Please not that the formatting of this table has not been reproduced below. Instead, I present the information as 4 seperate tables. The caption for this table presented in the Supplementary Information is: 
 "Parameters and random effect estimates for (a) the best-fit and (b) global logistic mixed effects models predicting the sex of individual ani nestlings. Significant parameters (p<0.05) have been bolded. The reference levels for the categorical fixed effects are: first hatching (for hatch order) and two-pair group (for breeding pairs)."
-```{r Top model S2}
+```{r Table s2 best fit}
 # AICc for top model presented in table 
 AICc(top_model) %>% round(1)
 
@@ -536,11 +536,11 @@ table_s2_best_fit %>%
   kable()
 ```
 
-```{r Saving table s2}
+```{r Saving table s2 best fit}
 write_csv(table_s2_best_fit, paste0(output_file_path, "/Table_S2_best_fit.csv"))
 ```
 
-```{r Global model parameter estimates}
+```{r Table s2 global}
 # AICc for global model presented in table  
 AICc(global_model) %>% round(1)
 
@@ -574,14 +574,14 @@ table_s2_global %>%
   kable()
 ```
 
-```{r Saving table s2}
+```{r Saving table s2 global}
 write_csv(table_s2_global, paste0(output_file_path, "/Table_S2_global.csv"))
 ```
 
 
 # Assessing model residuals using DHARMa
 Here, we use the “DHARMa” package to visualize the global model's residuals.
-```{r Dharma set up}
+```{r DHARMa set up}
 model_interrogator <- function(model, fixed_effects, df){
   
   # Running simulation
@@ -613,7 +613,7 @@ model_interrogator <- function(model, fixed_effects, df){
 ```
 
 
-```{r Global model Dharma}
+```{r Global model DHARMa}
 model_interrogator(global_model, "Hatch_order + Brood_size_scaled + Clutch_size_scaled + Helper_presence + Synchrony_scaled + Breeding_pairs", dfcc)
 ```
 
@@ -623,7 +623,7 @@ Scaled residual plots of the global model predicting nestling sex.
 simulateResiduals(fittedModel = global_model, n = 1000, plot = T)
 ```
 
-```{r Saving Figure S1}
+```{r Saving figure s1}
 # Saving this figure separately as Figure s1
 figure_s1 <- simulateResiduals(fittedModel = global_model, n = 1000)
 pdf(paste0(output_file_path, "/Figure_S1.pdf"))
