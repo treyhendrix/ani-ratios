@@ -1,29 +1,21 @@
----
-title: "R Code for No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers"
-author: |
-  Trey Hendrix
-date: | 
-  Updated: 2023-03-06
-output: 
-  github_document:
-    toc: true
-    toc_depth: 3
----
+#' ---
+#' title: "R Code for No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers"
+#' author: |
+#'   Trey Hendrix
+#' date: | 
+#'   Updated: 2023-03-06
+#' output: 
+#'   github_document:
+#'     toc: true
+#'     toc_depth: 3
+#' ---
+#' 
 
-```{r setup, warning = FALSE, message = FALSE, purl = FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  include = TRUE, 
-  fig.path = "GRANH1_R_Code_figures_for_markdown/"
-)
-```
-
-This document contains the R code used to produce the analyses, figures, and supplemental material for the manuscript titled "No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers." The complete list of authors is Trey C. Hendrix and Christina Riehl. This manuscript is currently under peer review. 
-
-# Required Packages
-```{r Packages}
+#' 
+#' This document contains the R code used to produce the analyses, figures, and supplemental material for the manuscript titled "No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers." The complete list of authors is Trey C. Hendrix and Christina Riehl. This manuscript is currently under peer review. 
+#' 
+#' # Required Packages
+## ----Packages-----------------------------------------------------------------
 library(readr)
 library(dplyr) 
 library(lme4)
@@ -40,27 +32,27 @@ library(car)
 library(forcats)
 library(knitr)
 library(callr)
-```
 
-This document was created using: 
-```{r Version}
+#' 
+#' This document was created using: 
+## ----Version------------------------------------------------------------------
 sessionInfo()
-```
 
-# Data
-The data set analyzed in this study will be made publicly available in the Figshare repository upon publication. The DOI [doi.org/10.6084/m9.figshare.21760979](http://doi.org/10.6084/m9.figshare.21760979) has been reserved, and it will become active if the paper is accepted for publication. We apologize for any inconvenience. The data file necessary to reproduce these analyses is named "GRANH1_anon_221123.csv" and, although it is not currently publicly available, its contents are described in a "README" document in the "Data" folder of this repository. The structure of the data frame is: 
-```{r Data Path}
+#' 
+#' # Data
+#' The data set analyzed in this study will be made publicly available in the Figshare repository upon publication. The DOI [doi.org/10.6084/m9.figshare.21760979](http://doi.org/10.6084/m9.figshare.21760979) has been reserved, and it will become active if the paper is accepted for publication. We apologize for any inconvenience. The data file necessary to reproduce these analyses is named "GRANH1_anon_221123.csv" and, although it is not currently publicly available, its contents are described in a "README" document in the "Data" folder of this repository. The structure of the data frame is: 
+## ----Data Path----------------------------------------------------------------
 file_path_to_GRANH1_csv <- "/Users/Trey/Documents/All Files/PhD Research/GRANH1/Ani Data Mining R Project/Data/GRANH1_anon_221123.csv" # local file path that will not work on your machine
 # This will be updated when the data set is publically released 
-```
-The structure of these data set is: 
-```{r Data frame structure}
+
+#' The structure of these data set is: 
+## ----Data frame structure-----------------------------------------------------
 df <- read_csv(file_path_to_GRANH1_csv)
 glimpse(df, show_col_types = FALSE)
-```
 
-# Preparing the data
-```{r Standardizing continuous fixed effects}
+#' 
+#' # Preparing the data
+## ----Standardizing continuous fixed effects-----------------------------------
 # Adding a year_location variable to df to denote unique broods
 df <- df %>%
   mutate(Year_location = paste(Year, Location, sep = "_"))
@@ -85,12 +77,12 @@ fixed_effects <- c("Hatch_order", "Brood_size_scaled",
 
 # Saving a complete case version of the data frame for use in models
 dfcc <- df[complete.cases(select(df, fixed_effects[1:6])),]
-```
 
-
-# Sample sizes reported in manuscript
-## Abstract and methods sections
-```{r Sex sample sizes}
+#' 
+#' 
+#' # Sample sizes reported in manuscript
+#' ## Abstract and methods sections
+## ----Sex sample sizes---------------------------------------------------------
 # All nestlings with sex information 
 n_nestlings <- df %>% pull(Band_number) %>% length()
 n_broods <- df %>% pull(Year_location) %>% unique() %>% length()
@@ -105,10 +97,10 @@ n_cc_broods <- dfcc %>% pull(Year_location) %>% unique() %>% length()
 n_cc_locations <- dfcc %>% pull(Location) %>% unique() %>% length() 
 
 paste("For complete case analysis:", n_cc_nestlings, "nestlings,", n_cc_broods, "broods, and", n_cc_locations, "locations.")
-```
 
-## Results section
-```{r Sample sizes}
+#' 
+#' ## Results section
+## ----Sample sizes-------------------------------------------------------------
 # On average, how many nestlings were sampled in years where a female bias was observed vs. when no bias was observed?
 df %>%
   group_by(Year) %>%
@@ -126,11 +118,11 @@ df %>%
   ungroup() %>% 
   mutate(Mean_n = round(Mean_n)) %>% 
   kable()
-```
 
-# Population-level sex ratio
-To determine if the nestlings in our study population overall deviated from the expected 50:50 sex ratio, we consider two tests that differ in the assumptions they make about the independence of a nestling's sex. These statistical tests (as well as the proportion of our study population that is male) are reported in our results section under the subheading "Population-level sex ratio."
-```{r Population-level sex ratio}
+#' 
+#' # Population-level sex ratio
+#' To determine if the nestlings in our study population overall deviated from the expected 50:50 sex ratio, we consider two tests that differ in the assumptions they make about the independence of a nestling's sex. These statistical tests (as well as the proportion of our study population that is male) are reported in our results section under the subheading "Population-level sex ratio."
+## ----Population-level sex ratio-----------------------------------------------
 # Proportion of our study population that is male
 mean(df$Sex) # percentage male  
 sum(df$Sex) # total males
@@ -146,12 +138,12 @@ wilcoxon_df <- df %>%
   ungroup()
 
 wilcox.test(x = wilcoxon_df$Prop_male, y = wilcoxon_df$Prop_female, alternative = "two.sided", paired = TRUE, conf.level = 0.95) 
-```
 
-
-## Figure 1
-Sex ratio of nestlings during each year of our study. Error bars show 95% confidence intervals. The dotted line indicates a 50:50 sex ratio, and the number of nestlings sexed in each year is shown above the error bars for each year.
-```{r Figure 1}
+#' 
+#' 
+#' ## Figure 1
+#' Sex ratio of nestlings during each year of our study. Error bars show 95% confidence intervals. The dotted line indicates a 50:50 sex ratio, and the number of nestlings sexed in each year is shown above the error bars for each year.
+## ----Figure 1-----------------------------------------------------------------
 # ggplot theme that will be reused for plots 
 theme_simple <- theme(panel.grid.major = element_blank(), 
                       panel.grid.minor = element_blank(),
@@ -178,25 +170,25 @@ figure_1 <- df %>%
   geom_text(aes(label = paste(n), y = Mean_sex_ratio + 1.96*se + 0.10), size = 4, color = "black")
 
 figure_1
-```
 
-```{r Saving figure 1}
+#' 
+## ----Saving figure 1----------------------------------------------------------
 working_directory <- getwd()
 project_file_path <- str_remove(working_directory, pattern = fixed("/Scripts")) # This code might need to be modified on your machine to produce the correct file path
 output_file_path <- paste0(project_file_path, "/Output")
 
 ggsave(paste0(output_file_path, "/Figure_1.pdf"), figure_1, width = 7, height = 3)
-```
 
-
-# Facultative sex ratio adjustment
-Here, we are interested in understanding which variables of interest, if any, can predict the sex of individual nestlings. We use logistic mixed-effects models with a logit link using the glmer function in the lme4 package. All models included nestling sex (coded as “0” for females and “1” for males) as the response variable as well as nest location and year (nested within nest location) as random effects to control for repeated measures. Fixed effects included hatch order, hatching synchrony, brood size, clutch size, the presence of helpers, the number of breeding pairs, and the interaction between synchrony and hatch order. Please see the manuscript text for definitions of these variables. 
-
-In our model selection we use a “best subsets” method. Candidate models are compared to every possible model including a subset of the terms. We consider 80 candidate models (listed below). We do not consider candidate models that included the synchrony by hatch order interaction term unless they also contain synchrony and hatch order separately as fixed effects. Candidate models are evaluated based on Akaike’s Information Criterion adjusted for finite sample sizes (AICc). Models that differed from the top model by less than 2 AICc units are considered to potentially have explanatory value unless they differed from the top model by the addition of a single parameter.
-
-## Generating list of candidate models
-This code produces a list of 79 candidate models (80 if you consider a null model with no fixed effects a candidate model):
-```{r Making a list of candidate models}
+#' 
+#' 
+#' # Facultative sex ratio adjustment
+#' Here, we are interested in understanding which variables of interest, if any, can predict the sex of individual nestlings. We use logistic mixed-effects models with a logit link using the glmer function in the lme4 package. All models included nestling sex (coded as “0” for females and “1” for males) as the response variable as well as nest location and year (nested within nest location) as random effects to control for repeated measures. Fixed effects included hatch order, hatching synchrony, brood size, clutch size, the presence of helpers, the number of breeding pairs, and the interaction between synchrony and hatch order. Please see the manuscript text for definitions of these variables. 
+#' 
+#' In our model selection we use a “best subsets” method. Candidate models are compared to every possible model including a subset of the terms. We consider 80 candidate models (listed below). We do not consider candidate models that included the synchrony by hatch order interaction term unless they also contain synchrony and hatch order separately as fixed effects. Candidate models are evaluated based on Akaike’s Information Criterion adjusted for finite sample sizes (AICc). Models that differed from the top model by less than 2 AICc units are considered to potentially have explanatory value unless they differed from the top model by the addition of a single parameter.
+#' 
+#' ## Generating list of candidate models
+#' This code produces a list of 79 candidate models (80 if you consider a null model with no fixed effects a candidate model):
+## ----Making a list of candidate models----------------------------------------
 # Function for generating possible combinations of fixed effects 
 fixed_effect_combiner <- function(fixed_effects){
   
@@ -247,11 +239,11 @@ interaction_indexer <- function(fixed_effects_for_one_model){
 index_of_combinations_to_keep <- lapply(fixed_effect_combiner(fixed_effects), interaction_indexer) %>% unlist() 
 
 candidate_models <- fixed_effect_combiner(fixed_effects)[index_of_combinations_to_keep]
-```
 
-## Model Selection
-The code below creates a logistic mixed-effects models for each of our 79 candidate models generated above, compares the model to the null model, and then ranks/sorts the models by their AICc scores. 
-```{r Modeling functions}
+#' 
+#' ## Model Selection
+#' The code below creates a logistic mixed-effects models for each of our 79 candidate models generated above, compares the model to the null model, and then ranks/sorts the models by their AICc scores. 
+## ----Modeling functions-------------------------------------------------------
 # Modeling functions to be reused
 
 # Function for creating a single model
@@ -384,10 +376,10 @@ add_evidence_ratio_logistic <- function(dv, odf, re, df = dfcc){
   
   return(final_df)
 }
-```
 
-
-```{r Running Models}
+#' 
+#' 
+## ----Running Models-----------------------------------------------------------
 # Global model 
 global_model <- logistic_model_maker(dv = "Sex", iv = candidate_models[length(candidate_models)], re = "(1|Year/Location)", df = dfcc)
 logistic_visualizer(global_model) 
@@ -402,11 +394,11 @@ models_df <- lapply(as.list(candidate_models),
   select(Formula, delta_AICc, AICc, everything())
 
 models_df <- add_evidence_ratio_logistic(dv = "Sex", odf = models_df, re = "(1|Year/Location)", df = df)
-```
 
-## Table 1
-Best subset models predicting the sex of individual nestlings. All models are logistic mixed-effect models with nest location and year included as a random intercept. Each model is compared to a null model run on the same dataset including only random effects using a likelihood ratio test. Models with ∆AICc < 2 are shown as well as global and null models. All continuous variables (i.e., clutch size, brood size, synchrony) were scaled and centered to reduce multicollinearity. 
-```{r Table 1}
+#' 
+#' ## Table 1
+#' Best subset models predicting the sex of individual nestlings. All models are logistic mixed-effect models with nest location and year included as a random intercept. Each model is compared to a null model run on the same dataset including only random effects using a likelihood ratio test. Models with ∆AICc < 2 are shown as well as global and null models. All continuous variables (i.e., clutch size, brood size, synchrony) were scaled and centered to reduce multicollinearity. 
+## ----Table 1------------------------------------------------------------------
 table_1 <- models_df %>%
   mutate(Formula = ifelse(Formula == candidate_models[length(candidate_models)], "Global", Formula)) %>% 
   filter(delta_AICc < 2 | Formula %in% c("Global", "Null")) %>% 
@@ -423,22 +415,22 @@ table_1 <- table_1 %>%
 
 table_1 %>% 
   kable()
-```
 
-```{r Saving table 1}
+#' 
+## ----Saving table 1-----------------------------------------------------------
 write_csv(table_1, paste0(output_file_path, "/Table_1.csv"))
-```
 
-```{r Top model}
+#' 
+## ----Top model----------------------------------------------------------------
 # Top performing model (not significant)
 top_model <- logistic_model_maker(dv = "Sex", iv = "Hatch_order + Clutch_size_scaled", re = "(1|Year/Location)", df = dfcc) 
 logistic_visualizer(top_model)
 summary(top_model) 
-```
 
-## Table S1
-Variance inflation factors for the fixed effects included in the global model predicting the sex of individual nestlings. These estimates were generated using the “vif” function from the “car” package (Fox and Weisberg 2019).
-```{r vif for global model}
+#' 
+#' ## Table S1
+#' Variance inflation factors for the fixed effects included in the global model predicting the sex of individual nestlings. These estimates were generated using the “vif” function from the “car” package (Fox and Weisberg 2019).
+## ----vif for global model-----------------------------------------------------
 table_s1 <- vif(global_model)  %>%
   as_tibble() %>% 
   mutate(Predictor = row.names(vif(global_model)), 
@@ -448,16 +440,16 @@ table_s1 <- vif(global_model)  %>%
 
 table_s1 %>% 
   kable()
-```
 
-```{r Saving table s1}
+#' 
+## ----Saving table s1----------------------------------------------------------
 write_csv(table_s1, paste0(output_file_path, "/Table_S1.csv"))
-```
 
-
-## Figure 2
-Sex ratio of nestlings with respect to (a) whether or not a helper was observed at their nest and (b) position in hatch order. In both, error bars show 95% confidence intervals, the dotted line indicates a 50:50 sex ratio, and the number of nestlings sexed in each year is shown above each error bar.
-```{r Figure 2}
+#' 
+#' 
+#' ## Figure 2
+#' Sex ratio of nestlings with respect to (a) whether or not a helper was observed at their nest and (b) position in hatch order. In both, error bars show 95% confidence intervals, the dotted line indicates a 50:50 sex ratio, and the number of nestlings sexed in each year is shown above each error bar.
+## ----Figure 2-----------------------------------------------------------------
 helper_plot <- df %>%
   filter(!is.na(Helper_presence)) %>% 
   group_by(Helper_presence) %>%
@@ -496,17 +488,17 @@ hatch_fraction_plot <- df %>%
   ggtitle("b.")
 
 figure_2 <- grid.arrange(helper_plot, hatch_fraction_plot, nrow = 1, respect = TRUE)
-```
 
-```{r Saving figure 2}
+#' 
+## ----Saving figure 2----------------------------------------------------------
 ggsave(paste0(output_file_path, "/Figure_2.pdf"), figure_2, width = 7, height = 3)
-```
 
-
-## Table S2
-Please not that the formatting of this table has not been reproduced below. Instead, I present the information as 4 seperate tables. The caption for this table presented in the Supplementary Information is: 
-"Parameters and random effect estimates for (a) the best-fit and (b) global logistic mixed effects models predicting the sex of individual ani nestlings. Significant parameters (p<0.05) have been bolded. The reference levels for the categorical fixed effects are: first hatching (for hatch order) and two-pair group (for breeding pairs)."
-```{r Table s2 best fit}
+#' 
+#' 
+#' ## Table S2
+#' Please not that the formatting of this table has not been reproduced below. Instead, I present the information as 4 seperate tables. The caption for this table presented in the Supplementary Information is: 
+#' "Parameters and random effect estimates for (a) the best-fit and (b) global logistic mixed effects models predicting the sex of individual ani nestlings. Significant parameters (p<0.05) have been bolded. The reference levels for the categorical fixed effects are: first hatching (for hatch order) and two-pair group (for breeding pairs)."
+## ----Table s2 best fit--------------------------------------------------------
 # AICc for top model presented in table 
 AICc(top_model) %>% round(1)
 
@@ -537,13 +529,13 @@ table_s2_best_fit <- top_short_table %>%
 
 table_s2_best_fit %>% 
   kable()
-```
 
-```{r Saving table s2 best fit}
+#' 
+## ----Saving table s2 best fit-------------------------------------------------
 write_csv(table_s2_best_fit, paste0(output_file_path, "/Table_S2_best_fit.csv"))
-```
 
-```{r Table s2 global}
+#' 
+## ----Table s2 global----------------------------------------------------------
 # AICc for global model presented in table  
 AICc(global_model) %>% round(1)
 
@@ -575,16 +567,16 @@ table_s2_global <- global_short_table %>%
 
 table_s2_global %>% 
   kable()
-```
 
-```{r Saving table s2 global}
+#' 
+## ----Saving table s2 global---------------------------------------------------
 write_csv(table_s2_global, paste0(output_file_path, "/Table_S2_global.csv"))
-```
 
-
-# Assessing model residuals using DHARMa
-Here, we use the “DHARMa” package to visualize the global model's residuals.
-```{r DHARMa set up}
+#' 
+#' 
+#' # Assessing model residuals using DHARMa
+#' Here, we use the “DHARMa” package to visualize the global model's residuals.
+## ----DHARMa set up------------------------------------------------------------
 model_interrogator <- function(model, fixed_effects, df){
   
   # Running simulation
@@ -613,34 +605,24 @@ model_interrogator <- function(model, fixed_effects, df){
   testZeroInflation(sim)
   testTemporalAutocorrelation(sim, df$unique_relative_time)
 }
-```
 
-
-```{r Global model DHARMa}
+#' 
+#' 
+## ----Global model DHARMa------------------------------------------------------
 model_interrogator(global_model, "Hatch_order + Brood_size_scaled + Clutch_size_scaled + Helper_presence + Synchrony_scaled + Breeding_pairs", dfcc)
-```
 
-## Figure S1
-Scaled residual plots of the global model predicting nestling sex.
-```{r Figure s1}
+#' 
+#' ## Figure S1
+#' Scaled residual plots of the global model predicting nestling sex.
+## ----Figure s1----------------------------------------------------------------
 simulateResiduals(fittedModel = global_model, n = 1000, plot = T)
-```
 
-```{r Saving figure s1}
+#' 
+## ----Saving figure s1---------------------------------------------------------
 # Saving this figure separately as Figure s1
 figure_s1 <- simulateResiduals(fittedModel = global_model, n = 1000)
 pdf(paste0(output_file_path, "/Figure_S1.pdf"))
 plot(figure_s1)
 dev.off()
-```
 
-```{r Creating .R script file, include = FALSE, purl = FALSE}
-# The code below generates a copy of the project's code as an R file (".R") for users who prefer that file format
-# It is necessary to wrap the code in a callr function due to "duplicate chuck" errors that arise when this document is knit 
-# Additional details on this bug can be found here: https://stackoverflow.com/questions/36868287/purl-within-knit-duplicate-label-error
-
-callr::r(function(){
-  working_directory <- getwd()
-  knitr::purl(input = paste0(working_directory, "/GRANH1_R_Code.Rmd"), output = paste0(working_directory, "/GRANH1_R_Code.R"), documentation = 2)
-})
-```
+#' 

@@ -69,6 +69,7 @@ library(DHARMa)
 library(car)
 library(forcats)
 library(knitr)
+library(callr)
 ```
 
 This document was created using:
@@ -92,33 +93,34 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] knitr_1.41          forcats_0.5.2       car_3.1-1          
-    ##  [4] carData_3.0-5       DHARMa_0.4.6        tidyr_1.2.1        
-    ##  [7] gridExtra_2.3       ggplot2_3.4.0       stringr_1.5.0      
-    ## [10] purrr_0.3.5         MuMIn_1.47.1        broom.mixed_0.2.9.4
-    ## [13] lmerTest_3.1-3      lme4_1.1-31         Matrix_1.5-1       
-    ## [16] dplyr_1.0.10        readr_2.1.3        
+    ##  [1] callr_3.7.3         knitr_1.41          forcats_0.5.2      
+    ##  [4] car_3.1-1           carData_3.0-5       DHARMa_0.4.6       
+    ##  [7] tidyr_1.2.1         gridExtra_2.3       ggplot2_3.4.0      
+    ## [10] stringr_1.5.0       purrr_0.3.5         MuMIn_1.47.1       
+    ## [13] broom.mixed_0.2.9.4 lmerTest_3.1-3      lme4_1.1-31        
+    ## [16] Matrix_1.5-1        dplyr_1.0.10        readr_2.1.3        
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.0    xfun_0.35           listenv_0.9.0      
-    ##  [4] splines_4.2.2       lattice_0.20-45     colorspace_2.0-3   
-    ##  [7] vctrs_0.5.1         generics_0.1.3      stats4_4.2.2       
-    ## [10] htmltools_0.5.4     yaml_2.3.6          utf8_1.2.2         
-    ## [13] rlang_1.0.6         pillar_1.8.1        nloptr_2.0.3       
-    ## [16] withr_2.5.0         glue_1.6.2          DBI_1.1.3          
-    ## [19] lifecycle_1.0.3     munsell_0.5.0       gtable_0.3.1       
-    ## [22] future_1.30.0       codetools_0.2-18    evaluate_0.19      
-    ## [25] tzdb_0.3.0          fastmap_1.1.0       parallel_4.2.2     
-    ## [28] fansi_1.0.3         broom_1.0.2         furrr_0.3.1        
-    ## [31] Rcpp_1.0.9          scales_1.2.1        backports_1.4.1    
-    ## [34] abind_1.4-5         parallelly_1.33.0   hms_1.1.2          
-    ## [37] digest_0.6.31       stringi_1.7.8       numDeriv_2016.8-1.1
-    ## [40] grid_4.2.2          cli_3.4.1           tools_4.2.2        
-    ## [43] magrittr_2.0.3      tibble_3.1.8        pkgconfig_2.0.3    
-    ## [46] MASS_7.3-58.1       ellipsis_0.3.2      assertthat_0.2.1   
-    ## [49] minqa_1.2.5         rmarkdown_2.19      rstudioapi_0.14    
-    ## [52] globals_0.16.2      R6_2.5.1            boot_1.3-28        
-    ## [55] nlme_3.1-160        compiler_4.2.2
+    ##  [1] Rcpp_1.0.9          lattice_0.20-45     listenv_0.9.0      
+    ##  [4] ps_1.7.2            assertthat_0.2.1    digest_0.6.31      
+    ##  [7] utf8_1.2.2          parallelly_1.33.0   R6_2.5.1           
+    ## [10] backports_1.4.1     stats4_4.2.2        evaluate_0.19      
+    ## [13] pillar_1.8.1        rlang_1.0.6         rstudioapi_0.14    
+    ## [16] minqa_1.2.5         furrr_0.3.1         nloptr_2.0.3       
+    ## [19] rmarkdown_2.19      splines_4.2.2       munsell_0.5.0      
+    ## [22] broom_1.0.2         compiler_4.2.2      numDeriv_2016.8-1.1
+    ## [25] xfun_0.35           pkgconfig_2.0.3     globals_0.16.2     
+    ## [28] htmltools_0.5.4     tidyselect_1.2.0    tibble_3.1.8       
+    ## [31] codetools_0.2-18    fansi_1.0.3         future_1.30.0      
+    ## [34] tzdb_0.3.0          withr_2.5.0         MASS_7.3-58.1      
+    ## [37] grid_4.2.2          nlme_3.1-160        gtable_0.3.1       
+    ## [40] lifecycle_1.0.3     DBI_1.1.3           magrittr_2.0.3     
+    ## [43] scales_1.2.1        cli_3.4.1           stringi_1.7.8      
+    ## [46] ellipsis_0.3.2      generics_0.1.3      vctrs_0.5.1        
+    ## [49] boot_1.3-28         tools_4.2.2         glue_1.6.2         
+    ## [52] hms_1.1.2           processx_3.8.0      abind_1.4-5        
+    ## [55] parallel_4.2.2      fastmap_1.1.0       yaml_2.3.6         
+    ## [58] colorspace_2.0-3
 
 # Data
 
