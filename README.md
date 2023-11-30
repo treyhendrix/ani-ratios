@@ -1,7 +1,7 @@
 #  No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers
- This is the code for the following manuscript currently under peer review: 
- 
- >  Hendrix, T.C. and C. Riehl (In review) No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers.
+ This is the code for the following paper:
+
+> Hendrix, T.C. and C. Riehl (2023) No evidence for adaptive sex ratio adjustment in a cooperatively breeding bird with helpful helpers. Behavioral Ecology and Sociobiology. https://doi.org/10.1007/s00265-023-03355-1
  
  
 ## Project Abstract
