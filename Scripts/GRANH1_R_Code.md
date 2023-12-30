@@ -22,7 +22,7 @@ Updated: 2023-12-30
   - [Figure S1](#figure-s1)
   - [Table S2](#table-s2)
   - [Figure 2](#figure-2)
-  - [Table S2](#table-s2-1)
+  - [Table S3](#table-s3)
 - [Assessing model residuals using
   DHARMa](#assessing-model-residuals-using-dharma)
 
@@ -62,60 +62,55 @@ This document was created using:
 sessionInfo()
 ```
 
-    ## R version 4.3.2 (2023-10-31 ucrt)
-    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 11 x64 (build 22631)
+    ## R version 4.2.2 (2022-10-31)
+    ## Platform: x86_64-apple-darwin17.0 (64-bit)
+    ## Running under: macOS Big Sur ... 10.16
     ## 
     ## Matrix products: default
-    ## 
+    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
     ## 
     ## locale:
-    ## [1] LC_COLLATE=English_United States.utf8 
-    ## [2] LC_CTYPE=English_United States.utf8   
-    ## [3] LC_MONETARY=English_United States.utf8
-    ## [4] LC_NUMERIC=C                          
-    ## [5] LC_TIME=English_United States.utf8    
-    ## 
-    ## time zone: America/New_York
-    ## tzcode source: internal
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
     ##  [1] simr_1.0.7          rdryad_1.0.0        callr_3.7.3        
-    ##  [4] knitr_1.45          forcats_1.0.0       car_3.1-2          
+    ##  [4] knitr_1.41          forcats_0.5.2       car_3.1-1          
     ##  [7] carData_3.0-5       DHARMa_0.4.6        tidyr_1.3.0        
-    ## [10] gridExtra_2.3       ggplot2_3.4.4       stringr_1.5.1      
-    ## [13] purrr_1.0.2         MuMIn_1.47.5        broom.mixed_0.2.9.4
-    ## [16] lmerTest_3.1-3      lme4_1.1-35.1       Matrix_1.6-4       
-    ## [19] dplyr_1.1.4         readr_2.1.4        
+    ## [10] gridExtra_2.3       ggplot2_3.4.0       stringr_1.5.0      
+    ## [13] purrr_1.0.1         MuMIn_1.47.1        broom.mixed_0.2.9.4
+    ## [16] lmerTest_3.1-3      lme4_1.1-31         Matrix_1.5-1       
+    ## [19] dplyr_1.0.10        readr_2.1.3        
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.0    RLRsim_3.1-8        fastmap_1.1.1      
-    ##  [4] digest_0.6.33       mime_0.12           lifecycle_1.0.4    
-    ##  [7] processx_3.8.2      magrittr_2.0.3      compiler_4.3.2     
-    ## [10] rlang_1.1.2         tools_4.3.2         plotrix_3.8-4      
-    ## [13] utf8_1.2.4          yaml_2.3.7          curl_5.1.0         
-    ## [16] plyr_1.8.9          abind_1.4-5         httpcode_0.3.0     
-    ## [19] withr_2.5.2         numDeriv_2016.8-1.1 grid_4.3.2         
-    ## [22] stats4_4.3.2        fansi_1.0.5         colorspace_2.1-0   
-    ## [25] future_1.33.0       globals_0.16.2      scales_1.3.0       
-    ## [28] iterators_1.0.14    MASS_7.3-60         crul_1.4.0         
-    ## [31] cli_3.6.1           rmarkdown_2.25      generics_0.1.3     
-    ## [34] rstudioapi_0.15.0   binom_1.1-1.1       tzdb_0.4.0         
-    ## [37] minqa_1.2.6         splines_4.3.2       parallel_4.3.2     
-    ## [40] vctrs_0.6.4         boot_1.3-28.1       jsonlite_1.8.7     
-    ## [43] hms_1.1.3           pbkrtest_0.5.2      listenv_0.9.0      
-    ## [46] glue_1.6.2          parallelly_1.36.0   nloptr_2.0.3       
-    ## [49] codetools_0.2-19    ps_1.7.5            stringi_1.8.2      
-    ## [52] gtable_0.3.4        munsell_0.5.0       tibble_3.2.1       
-    ## [55] furrr_0.3.1         pillar_1.9.0        rappdirs_0.3.3     
-    ## [58] htmltools_0.5.7     R6_2.5.1            hoardr_0.5.3       
-    ## [61] evaluate_0.23       lattice_0.21-9      backports_1.4.1    
-    ## [64] broom_1.0.5         Rcpp_1.0.11         zip_2.3.0          
-    ## [67] nlme_3.1-163        mgcv_1.9-0          xfun_0.41          
-    ## [70] pkgconfig_2.0.3
+    ##  [1] binom_1.1-1.1       jsonlite_1.8.4      splines_4.2.2      
+    ##  [4] RLRsim_3.1-8        assertthat_0.2.1    stats4_4.2.2       
+    ##  [7] yaml_2.3.6          globals_0.16.2      numDeriv_2016.8-1.1
+    ## [10] pillar_1.8.1        backports_1.4.1     lattice_0.20-45    
+    ## [13] glue_1.6.2          digest_0.6.31       minqa_1.2.5        
+    ## [16] colorspace_2.0-3    plyr_1.8.8          htmltools_0.5.4    
+    ## [19] pkgconfig_2.0.3     httpcode_0.3.0      broom_1.0.2        
+    ## [22] listenv_0.9.0       scales_1.2.1        processx_3.8.0     
+    ## [25] tzdb_0.3.0          tibble_3.1.8        mgcv_1.8-41        
+    ## [28] generics_0.1.3      ellipsis_0.3.2      withr_2.5.0        
+    ## [31] furrr_0.3.1         pbkrtest_0.5.1      cli_3.4.1          
+    ## [34] magrittr_2.0.3      mime_0.12           evaluate_0.19      
+    ## [37] ps_1.7.2            future_1.30.0       fansi_1.0.3        
+    ## [40] parallelly_1.33.0   nlme_3.1-160        MASS_7.3-58.1      
+    ## [43] tools_4.2.2         hms_1.1.2           lifecycle_1.0.3    
+    ## [46] munsell_0.5.0       plotrix_3.8-2       zip_2.2.2          
+    ## [49] compiler_4.2.2      rlang_1.1.1         grid_4.2.2         
+    ## [52] nloptr_2.0.3        iterators_1.0.14    rstudioapi_0.14    
+    ## [55] rappdirs_0.3.3      rmarkdown_2.19      boot_1.3-28        
+    ## [58] gtable_0.3.1        codetools_0.2-18    abind_1.4-5        
+    ## [61] DBI_1.1.3           curl_4.3.3          R6_2.5.1           
+    ## [64] fastmap_1.1.0       utf8_1.2.2          hoardr_0.5.3       
+    ## [67] stringi_1.7.8       parallel_4.2.2      crul_1.4.0         
+    ## [70] Rcpp_1.0.9          vctrs_0.6.2         tidyselect_1.2.0   
+    ## [73] xfun_0.35
 
 # Data
 
@@ -137,8 +132,6 @@ project_file_path <- str_remove(working_directory, pattern = stringr::fixed("/Sc
 
 file_path_to_GRANH1_csv <- paste0(project_file_path, "/Data/GRANH1_anon_221123.csv") # Using the copy of the csv on the ani-ratios repo
 ```
-
-The structure of these data set is:
 
 ``` r
 df <- read_csv(file_path_to_GRANH1_csv)
@@ -673,16 +666,16 @@ summary(global_model)
     ## 
     ## Fixed effects:
     ##                                     Estimate Std. Error z value Pr(>|z|)  
-    ## (Intercept)                         0.007552   0.188072   0.040   0.9680  
-    ## Hatch_orderMiddle                  -0.371700   0.221110  -1.681   0.0928 .
-    ## Hatch_orderLast                    -0.481147   0.269199  -1.787   0.0739 .
-    ## Brood_size_scaled                   0.048410   0.163568   0.296   0.7673  
-    ## Clutch_size_scaled                  0.110012   0.180163   0.611   0.5414  
-    ## Helper_presence                     0.195424   0.219117   0.892   0.3725  
-    ## Synchrony_scaled                   -0.208214   0.157569  -1.321   0.1864  
+    ## (Intercept)                         0.007552   0.188071   0.040   0.9680  
+    ## Hatch_orderMiddle                  -0.371700   0.221109  -1.681   0.0927 .
+    ## Hatch_orderLast                    -0.481147   0.269197  -1.787   0.0739 .
+    ## Brood_size_scaled                   0.048410   0.163567   0.296   0.7673  
+    ## Clutch_size_scaled                  0.110012   0.180162   0.611   0.5414  
+    ## Helper_presence                     0.195424   0.219116   0.892   0.3725  
+    ## Synchrony_scaled                   -0.208214   0.157568  -1.321   0.1864  
     ## Breeding_pairsThree                 0.173583   0.310100   0.560   0.5756  
-    ## Hatch_orderMiddle:Synchrony_scaled  0.287487   0.219774   1.308   0.1908  
-    ## Hatch_orderLast:Synchrony_scaled    0.113054   0.270425   0.418   0.6759  
+    ## Hatch_orderMiddle:Synchrony_scaled  0.287486   0.219773   1.308   0.1908  
+    ## Hatch_orderLast:Synchrony_scaled    0.113054   0.270423   0.418   0.6759  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -864,12 +857,12 @@ plot(figure_s1)
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## quartz_off_screen 
+    ##                 2
 
 ## Table S2
 
-Table S2 To estimate the minimal detectable effect size for our modeling
+To estimate the minimal detectable effect size for our modeling
 approach, we use the simr package. Please note that, in an effort to
 avoid the pitfalls of a post-hoc power analysis, we do not use our
 empirical data to estimate the effect size parameter (i.e., we are not
@@ -942,6 +935,10 @@ table_s2 %>%
 | Lipsey and Wilson (2001) | Medium effect size   | NA                    |       0.500 |           1.00 |
 | Lipsey and Wilson (2001) | Large effect size    | NA                    |       0.800 |           1.00 |
 
+``` r
+write_csv(table_s2, paste0(output_file_path, "/Table_S2.csv"))
+```
+
 ## Figure 2
 
 Sex ratio of nestlings with respect to (a) whether or not a helper was
@@ -997,7 +994,7 @@ figure_2 <- grid.arrange(helper_plot, hatch_fraction_plot, nrow = 1, respect = T
 ggsave(paste0(output_file_path, "/Figure_2.pdf"), figure_2, width = 7, height = 3)
 ```
 
-## Table S2
+## Table S3
 
 Please not that the formatting of this table has not been reproduced
 below. Instead, I present the information as 4 separate tables. The
@@ -1016,7 +1013,7 @@ AICc(top_model) %>% round(1)
     ## [1] 656.3
 
 ``` r
-# Best-fit model table S2
+# Best-fit model table S3
 top_short_table <- top_model %>% 
   tidy() %>%
   mutate(term = case_when(group == "Location:Year" ~ "sd_(Intercept)|Location:Year", 
@@ -1036,12 +1033,12 @@ top_cis_df <- top_cis %>%
 
 rownames(top_cis_df) <- NULL
 
-table_s2_best_fit <- top_short_table %>%
+table_s3_best_fit <- top_short_table %>%
   left_join(top_cis_df, by = "term") %>%
   mutate_if(is.numeric, function(x){round(x, 3)}) %>% 
   mutate(term = term_cleaner(term))
 
-table_s2_best_fit %>% 
+table_s3_best_fit %>% 
   kable()
 ```
 
@@ -1055,7 +1052,7 @@ table_s2_best_fit %>%
 | sd (Intercept)\|Year          |    0.000 |        NA |        NA |      NA |    0.000 |    0.302 |
 
 ``` r
-write_csv(table_s2_best_fit, paste0(output_file_path, "/Table_S2_best_fit.csv"))
+write_csv(table_s3_best_fit, paste0(output_file_path, "/Table_S3_best_fit.csv"))
 ```
 
 ``` r
@@ -1087,12 +1084,12 @@ global_cis_df <- global_cis %>%
 rownames(global_cis_df) <- NULL
 
 
-table_s2_global <- global_short_table %>%
+table_s3_global <- global_short_table %>%
   left_join(global_cis_df, by = "term") %>%
   mutate_if(is.numeric, function(x){round(x, 3)}) %>% 
   mutate(term = term_cleaner(term))
 
-table_s2_global %>% 
+table_s3_global %>% 
   kable()
 ```
 
@@ -1112,7 +1109,7 @@ table_s2_global %>%
 | sd (Intercept)\|Year          |    0.000 |        NA |        NA |      NA |    0.000 |    0.293 |
 
 ``` r
-write_csv(table_s2_global, paste0(output_file_path, "/Table_S2_global.csv"))
+write_csv(table_s3_global, paste0(output_file_path, "/Table_S3_global.csv"))
 ```
 
 # Assessing model residuals using DHARMa
