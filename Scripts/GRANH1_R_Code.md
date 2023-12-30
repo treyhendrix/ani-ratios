@@ -3,53 +3,35 @@ cooperatively breeding bird with helpful helpers”
 ================
 Trey Hendrix
 
-Updated: 2023-03-06
+Updated: 2023-12-30
 
-- <a href="#required-packages" id="toc-required-packages">Required
-  Packages</a>
-- <a href="#data" id="toc-data">Data</a>
-- <a href="#preparing-the-data" id="toc-preparing-the-data">Preparing the
-  data</a>
-- <a href="#sample-sizes-reported-in-manuscript"
-  id="toc-sample-sizes-reported-in-manuscript">Sample sizes reported in
-  manuscript</a>
-  - <a href="#abstract-and-methods-sections"
-    id="toc-abstract-and-methods-sections">Abstract and methods sections</a>
-  - <a href="#results-section" id="toc-results-section">Results section</a>
-- <a href="#population-level-sex-ratio"
-  id="toc-population-level-sex-ratio">Population-level sex ratio</a>
-  - <a href="#figure-1" id="toc-figure-1">Figure 1</a>
-- <a href="#facultative-sex-ratio-adjustment"
-  id="toc-facultative-sex-ratio-adjustment">Facultative sex ratio
-  adjustment</a>
-  - <a href="#generating-list-of-candidate-models"
-    id="toc-generating-list-of-candidate-models">Generating list of
-    candidate models</a>
-  - <a href="#model-selection" id="toc-model-selection">Model Selection</a>
-  - <a href="#table-1" id="toc-table-1">Table 1</a>
-  - <a href="#table-s1" id="toc-table-s1">Table S1</a>
-  - <a href="#figure-2" id="toc-figure-2">Figure 2</a>
-  - <a href="#table-s2" id="toc-table-s2">Table S2</a>
-- <a href="#assessing-model-residuals-using-dharma"
-  id="toc-assessing-model-residuals-using-dharma">Assessing model
-  residuals using DHARMa</a>
-  - <a href="#figure-s1" id="toc-figure-s1">Figure S1</a>
-
-``` r
-knitr::opts_chunk$set(
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE,
-  include = TRUE, 
-  fig.path = "GRANH1_R_Code_figures_for_markdown/"
-)
-```
+- [Required Packages](#required-packages)
+- [Data](#data)
+- [Preparing the data](#preparing-the-data)
+- [Sample sizes reported in article](#sample-sizes-reported-in-article)
+  - [Abstract and methods sections](#abstract-and-methods-sections)
+  - [Results section](#results-section)
+- [Population-level sex ratio](#population-level-sex-ratio)
+  - [Figure 1](#figure-1)
+- [Facultative sex ratio adjustment](#facultative-sex-ratio-adjustment)
+  - [Generating list of candidate
+    models](#generating-list-of-candidate-models)
+  - [Model Selection](#model-selection)
+  - [Table 1](#table-1)
+  - [Table S1](#table-s1)
+  - [Figure S1](#figure-s1)
+  - [Table S2](#table-s2)
+  - [Figure 2](#figure-2)
+  - [Table S2](#table-s2-1)
+- [Assessing model residuals using
+  DHARMa](#assessing-model-residuals-using-dharma)
 
 This document contains the R code used to produce the analyses, figures,
-and supplemental material for the manuscript titled “No evidence for
-adaptive sex ratio adjustment in a cooperatively breeding bird with
-helpful helpers.” The complete list of authors is Trey C. Hendrix and
-Christina Riehl. This manuscript is currently under peer review.
+and supplemental material for the article published in *Behavioral
+Ecology and Sociobiology* titled “No evidence for adaptive sex ratio
+adjustment in a cooperatively breeding bird with helpful helpers” (DOI:
+[10.1007/s00265-023-03355-1](https://doi.org/10.1007/s00265-023-03355-1)).
+The complete list of authors is Trey C. Hendrix and Christina Riehl.
 
 # Required Packages
 
@@ -70,6 +52,8 @@ library(car)
 library(forcats)
 library(knitr)
 library(callr)
+library(rdryad)
+library(simr)
 ```
 
 This document was created using:
@@ -78,65 +62,80 @@ This document was created using:
 sessionInfo()
 ```
 
-    ## R version 4.2.2 (2022-10-31)
-    ## Platform: x86_64-apple-darwin17.0 (64-bit)
-    ## Running under: macOS Big Sur ... 10.16
+    ## R version 4.3.2 (2023-10-31 ucrt)
+    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
+    ## Running under: Windows 11 x64 (build 22631)
     ## 
     ## Matrix products: default
-    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+    ## 
     ## 
     ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ## [1] LC_COLLATE=English_United States.utf8 
+    ## [2] LC_CTYPE=English_United States.utf8   
+    ## [3] LC_MONETARY=English_United States.utf8
+    ## [4] LC_NUMERIC=C                          
+    ## [5] LC_TIME=English_United States.utf8    
+    ## 
+    ## time zone: America/New_York
+    ## tzcode source: internal
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] callr_3.7.3         knitr_1.41          forcats_0.5.2      
-    ##  [4] car_3.1-1           carData_3.0-5       DHARMa_0.4.6       
-    ##  [7] tidyr_1.2.1         gridExtra_2.3       ggplot2_3.4.0      
-    ## [10] stringr_1.5.0       purrr_0.3.5         MuMIn_1.47.1       
-    ## [13] broom.mixed_0.2.9.4 lmerTest_3.1-3      lme4_1.1-31        
-    ## [16] Matrix_1.5-1        dplyr_1.0.10        readr_2.1.3        
+    ##  [1] simr_1.0.7          rdryad_1.0.0        callr_3.7.3        
+    ##  [4] knitr_1.45          forcats_1.0.0       car_3.1-2          
+    ##  [7] carData_3.0-5       DHARMa_0.4.6        tidyr_1.3.0        
+    ## [10] gridExtra_2.3       ggplot2_3.4.4       stringr_1.5.1      
+    ## [13] purrr_1.0.2         MuMIn_1.47.5        broom.mixed_0.2.9.4
+    ## [16] lmerTest_3.1-3      lme4_1.1-35.1       Matrix_1.6-4       
+    ## [19] dplyr_1.1.4         readr_2.1.4        
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Rcpp_1.0.9          lattice_0.20-45     listenv_0.9.0      
-    ##  [4] ps_1.7.2            assertthat_0.2.1    digest_0.6.31      
-    ##  [7] utf8_1.2.2          parallelly_1.33.0   R6_2.5.1           
-    ## [10] backports_1.4.1     stats4_4.2.2        evaluate_0.19      
-    ## [13] pillar_1.8.1        rlang_1.0.6         rstudioapi_0.14    
-    ## [16] minqa_1.2.5         furrr_0.3.1         nloptr_2.0.3       
-    ## [19] rmarkdown_2.19      splines_4.2.2       munsell_0.5.0      
-    ## [22] broom_1.0.2         compiler_4.2.2      numDeriv_2016.8-1.1
-    ## [25] xfun_0.35           pkgconfig_2.0.3     globals_0.16.2     
-    ## [28] htmltools_0.5.4     tidyselect_1.2.0    tibble_3.1.8       
-    ## [31] codetools_0.2-18    fansi_1.0.3         future_1.30.0      
-    ## [34] tzdb_0.3.0          withr_2.5.0         MASS_7.3-58.1      
-    ## [37] grid_4.2.2          nlme_3.1-160        gtable_0.3.1       
-    ## [40] lifecycle_1.0.3     DBI_1.1.3           magrittr_2.0.3     
-    ## [43] scales_1.2.1        cli_3.4.1           stringi_1.7.8      
-    ## [46] ellipsis_0.3.2      generics_0.1.3      vctrs_0.5.1        
-    ## [49] boot_1.3-28         tools_4.2.2         glue_1.6.2         
-    ## [52] hms_1.1.2           processx_3.8.0      abind_1.4-5        
-    ## [55] parallel_4.2.2      fastmap_1.1.0       yaml_2.3.6         
-    ## [58] colorspace_2.0-3
+    ##  [1] tidyselect_1.2.0    RLRsim_3.1-8        fastmap_1.1.1      
+    ##  [4] digest_0.6.33       mime_0.12           lifecycle_1.0.4    
+    ##  [7] processx_3.8.2      magrittr_2.0.3      compiler_4.3.2     
+    ## [10] rlang_1.1.2         tools_4.3.2         plotrix_3.8-4      
+    ## [13] utf8_1.2.4          yaml_2.3.7          curl_5.1.0         
+    ## [16] plyr_1.8.9          abind_1.4-5         httpcode_0.3.0     
+    ## [19] withr_2.5.2         numDeriv_2016.8-1.1 grid_4.3.2         
+    ## [22] stats4_4.3.2        fansi_1.0.5         colorspace_2.1-0   
+    ## [25] future_1.33.0       globals_0.16.2      scales_1.3.0       
+    ## [28] iterators_1.0.14    MASS_7.3-60         crul_1.4.0         
+    ## [31] cli_3.6.1           rmarkdown_2.25      generics_0.1.3     
+    ## [34] rstudioapi_0.15.0   binom_1.1-1.1       tzdb_0.4.0         
+    ## [37] minqa_1.2.6         splines_4.3.2       parallel_4.3.2     
+    ## [40] vctrs_0.6.4         boot_1.3-28.1       jsonlite_1.8.7     
+    ## [43] hms_1.1.3           pbkrtest_0.5.2      listenv_0.9.0      
+    ## [46] glue_1.6.2          parallelly_1.36.0   nloptr_2.0.3       
+    ## [49] codetools_0.2-19    ps_1.7.5            stringi_1.8.2      
+    ## [52] gtable_0.3.4        munsell_0.5.0       tibble_3.2.1       
+    ## [55] furrr_0.3.1         pillar_1.9.0        rappdirs_0.3.3     
+    ## [58] htmltools_0.5.7     R6_2.5.1            hoardr_0.5.3       
+    ## [61] evaluate_0.23       lattice_0.21-9      backports_1.4.1    
+    ## [64] broom_1.0.5         Rcpp_1.0.11         zip_2.3.0          
+    ## [67] nlme_3.1-163        mgcv_1.9-0          xfun_0.41          
+    ## [70] pkgconfig_2.0.3
 
 # Data
 
-The data set analyzed in this study will be made publicly available in
-the Figshare repository upon publication. The DOI
-[doi.org/10.6084/m9.figshare.21760979](http://doi.org/10.6084/m9.figshare.21760979)
-has been reserved, and it will become active if the paper is accepted
-for publication. We apologize for any inconvenience. The data file
-necessary to reproduce these analyses is named “GRANH1_anon_221123.csv”
-and, although it is not currently publicly available, its contents are
-described in a “README” document in the “Data” folder of this
-repository. The structure of the data frame is:
+The data set analyzed in this study is available in two locations:
+
+- The “Data” folder of the present GitHub repository,
+  [ani-ratios](https://github.com/treyhendrix/ani-ratios).
+- In the Figshare repository, DOI:
+  [10.6084/m9.figshare.c.6350639.v1](https://doi.org/10.6084/m9.figshare.c.6350639.v1).
+
+The data file necessary to reproduce these analyses is named
+“GRANH1_anon_221123.csv”. Its contents are described in a “README”
+document in the “Data” folder of the ani-ratios repo and in the file
+description on Figshare. The structure of the data frame is:
 
 ``` r
-file_path_to_GRANH1_csv <- "/Users/Trey/Documents/All Files/PhD Research/GRANH1/Ani Data Mining R Project/Data/GRANH1_anon_221123.csv" # local file path that will not work on your machine
-# This will be updated when the data set is publicly released 
+working_directory <- getwd()
+project_file_path <- str_remove(working_directory, pattern = stringr::fixed("/Scripts")) # This code might need to be modified on your machine to produce the correct file path
+
+file_path_to_GRANH1_csv <- paste0(project_file_path, "/Data/GRANH1_anon_221123.csv") # Using the copy of the csv on the ani-ratios repo
 ```
 
 The structure of these data set is:
@@ -189,7 +188,7 @@ fixed_effects <- c("Hatch_order", "Brood_size_scaled",
 dfcc <- df[complete.cases(select(df, fixed_effects[1:6])),]
 ```
 
-# Sample sizes reported in manuscript
+# Sample sizes reported in article
 
 ## Abstract and methods sections
 
@@ -304,6 +303,81 @@ wilcox.test(x = wilcoxon_df$Prop_male, y = wilcoxon_df$Prop_female, alternative 
     ## V = 1882, p-value = 0.3163
     ## alternative hypothesis: true location shift is not equal to 0
 
+To account for the effects of brood and year, we also assess the
+population-level sex ratio by making a generalized linear mixed-effects
+model with a logit link (lme4 package). The response variable is
+nestling sex (coded as “0” for females and “1” for males). Nest location
+and year (nested within nest location) are included as random effects.
+We do not include any fixed effects and calculate the odds ratio of the
+intercept, which may deviate from 1 if a population-level sex bias is
+present.
+
+``` r
+# Only use data from completely sampled broods 
+complete_brood_ids <- df %>% 
+  count(Year_location, Brood_size) %>% 
+  mutate(Complete_brood = Brood_size == n) %>% 
+  filter(Complete_brood) %>% 
+  pull(Year_location)
+
+dfcb <- df %>%
+  filter(Year_location %in% complete_brood_ids)
+
+# Function for creating a single model
+logistic_model_maker <- function(dv, iv, re, df = dfcc){
+  formula <- paste(dv, "~", iv, "+", re, sep = " ") %>% as.formula()
+  safe_glmer <- safely(glmer)
+  safe_output <- safe_glmer(formula, data = df, family = "binomial", control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=2e5)))
+  model <- safe_output$result
+}
+
+
+population_sex_bias_model <- logistic_model_maker(dv = "Sex", iv = "1", re = "(1 | Year/Location)", df = dfcb)
+summary(population_sex_bias_model)
+```
+
+    ## Generalized linear mixed model fit by maximum likelihood (Laplace
+    ##   Approximation) [glmerMod]
+    ##  Family: binomial  ( logit )
+    ## Formula: Sex ~ 1 + (1 | Year/Location)
+    ##    Data: ..2
+    ## Control: ..4
+    ## 
+    ##      AIC      BIC   logLik deviance df.resid 
+    ##    380.2    391.0   -187.1    374.2      267 
+    ## 
+    ## Scaled residuals: 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -1.0149 -1.0149  0.9853  0.9853  0.9853 
+    ## 
+    ## Random effects:
+    ##  Groups        Name        Variance Std.Dev.
+    ##  Location:Year (Intercept) 0        0       
+    ##  Year          (Intercept) 0        0       
+    ## Number of obs: 270, groups:  Location:Year, 49; Year, 11
+    ## 
+    ## Fixed effects:
+    ##             Estimate Std. Error z value Pr(>|z|)
+    ## (Intercept)  0.02963    0.12173   0.243    0.808
+    ## optimizer (bobyqa) convergence code: 0 (OK)
+    ## boundary (singular) fit: see help('isSingular')
+
+``` r
+odds_ratio_of_intercept <- broom.mixed::tidy(population_sex_bias_model) %>% 
+  filter(term == "(Intercept)") %>% 
+  mutate(upper = estimate + 1.96*std.error, 
+         lower = estimate - 1.96*std.error) %>% 
+  mutate(across(c(estimate, upper, lower), ~ round(exp(.x), 2))) %>% 
+  select(term, estimate, lower, upper)
+
+odds_ratio_of_intercept
+```
+
+    ## # A tibble: 1 × 4
+    ##   term        estimate lower upper
+    ##   <chr>          <dbl> <dbl> <dbl>
+    ## 1 (Intercept)     1.03  0.81  1.31
+
 ## Figure 1
 
 Sex ratio of nestlings during each year of our study. Error bars show
@@ -343,8 +417,6 @@ figure_1
 ![](GRANH1_R_Code_figures_for_markdown/Figure%201-1.png)<!-- -->
 
 ``` r
-working_directory <- getwd()
-project_file_path <- str_remove(working_directory, pattern = fixed("/Scripts")) # This code might need to be modified on your machine to produce the correct file path
 output_file_path <- paste0(project_file_path, "/Output")
 
 ggsave(paste0(output_file_path, "/Figure_1.pdf"), figure_1, width = 7, height = 3)
@@ -361,8 +433,7 @@ year (nested within nest location) as random effects to control for
 repeated measures. Fixed effects included hatch order, hatching
 synchrony, brood size, clutch size, the presence of helpers, the number
 of breeding pairs, and the interaction between synchrony and hatch
-order. Please see the manuscript text for definitions of these
-variables.
+order. Please see the paper’s text for definitions of these variables.
 
 In our model selection we use a “best subsets” method. Candidate models
 are compared to every possible model including a subset of the terms. We
@@ -440,29 +511,21 @@ The code below creates a logistic mixed-effects models for each of our
 model, and then ranks/sorts the models by their AICc scores.
 
 ``` r
-# Modeling functions to be reused
-
-# Function for creating a single model
-logistic_model_maker <- function(dv, iv, re, df = dfcc){
-  formula <- paste(dv, "~", iv, "+", re, sep = " ") %>% as.formula()
-  safe_glmer <- safely(glmer)
-  safe_output <- safe_glmer(formula, data = df, family = "binomial", control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=2e5)))
-  model <- safe_output$result
-}
+# Additional modeling functions to be reused
 
 # Cleaning up terms from the model to make them easier to read
 term_cleaner <- function(string){
-  new <- str_replace_all(string, fixed("Hatch_orderMiddle"), "Middle nestling")
-  new <- str_replace_all(new, fixed("Hatch_orderLast"), "Last nestling")
-  new <- str_replace_all(new, fixed("Hatch_orderMiddle:Synchrony_scaled"), "Middle nestling:Synchrony")
-  new <- str_replace_all(new, fixed("Hatch_orderLast:Synchrony_scaled"), "Last nestling:Synchrony")
-  new <- str_replace_all(new, fixed("Helper_presence"), "Helper")
-  new <- str_replace_all(new, fixed("Brood_size_scaled"), "Brood size")
-  new <- str_replace_all(new, fixed("Clutch_size_scaled"), "Clutch size")
-  new <- str_replace_all(new, fixed("Synchrony_scaled"), "Synchrony")
-  new <- str_replace_all(new, fixed("Breeding_pairsTwo"), "Two-pair group")
-  new <- str_replace_all(new, fixed("Breeding_pairsThree"), "Three-pair group")
-  new <- str_replace_all(new, fixed("_"), " ") # Remove underscores
+  new <- str_replace_all(string, stringr::fixed("Hatch_orderMiddle"), "Middle nestling")
+  new <- str_replace_all(new, stringr::fixed("Hatch_orderLast"), "Last nestling")
+  new <- str_replace_all(new, stringr::fixed("Hatch_orderMiddle:Synchrony_scaled"), "Middle nestling:Synchrony")
+  new <- str_replace_all(new, stringr::fixed("Hatch_orderLast:Synchrony_scaled"), "Last nestling:Synchrony")
+  new <- str_replace_all(new, stringr::fixed("Helper_presence"), "Helper")
+  new <- str_replace_all(new, stringr::fixed("Brood_size_scaled"), "Brood size")
+  new <- str_replace_all(new, stringr::fixed("Clutch_size_scaled"), "Clutch size")
+  new <- str_replace_all(new, stringr::fixed("Synchrony_scaled"), "Synchrony")
+  new <- str_replace_all(new, stringr::fixed("Breeding_pairsTwo"), "Two-pair group")
+  new <- str_replace_all(new, stringr::fixed("Breeding_pairsThree"), "Three-pair group")
+  new <- str_replace_all(new, stringr::fixed("_"), " ") # Remove underscores
   return(new)
 }
 
@@ -493,8 +556,8 @@ logistic_visualizer <- function(model){
 logistic_model_comparer <- function(dv, iv, re, df = df) {
   
   # Complete case analysis
-  fixed_effects_vector <- iv %>% str_split(pattern = fixed(" + ")) %>% unlist()
-  fixed_effects_vector <- fixed_effects_vector[str_detect(fixed_effects_vector, pattern = fixed(":"), negate = TRUE)]
+  fixed_effects_vector <- iv %>% str_split(pattern = stringr::fixed(" + ")) %>% unlist()
+  fixed_effects_vector <- fixed_effects_vector[str_detect(fixed_effects_vector, pattern = stringr::fixed(":"), negate = TRUE)]
   df_index <- df[,fixed_effects_vector]
   df <- df[complete.cases(df_index),]
   
@@ -610,16 +673,16 @@ summary(global_model)
     ## 
     ## Fixed effects:
     ##                                     Estimate Std. Error z value Pr(>|z|)  
-    ## (Intercept)                         0.007552   0.188071   0.040   0.9680  
-    ## Hatch_orderMiddle                  -0.371700   0.221109  -1.681   0.0927 .
-    ## Hatch_orderLast                    -0.481147   0.269197  -1.787   0.0739 .
-    ## Brood_size_scaled                   0.048410   0.163567   0.296   0.7673  
-    ## Clutch_size_scaled                  0.110012   0.180162   0.611   0.5414  
-    ## Helper_presence                     0.195424   0.219116   0.892   0.3725  
-    ## Synchrony_scaled                   -0.208214   0.157568  -1.321   0.1864  
+    ## (Intercept)                         0.007552   0.188072   0.040   0.9680  
+    ## Hatch_orderMiddle                  -0.371700   0.221110  -1.681   0.0928 .
+    ## Hatch_orderLast                    -0.481147   0.269199  -1.787   0.0739 .
+    ## Brood_size_scaled                   0.048410   0.163568   0.296   0.7673  
+    ## Clutch_size_scaled                  0.110012   0.180163   0.611   0.5414  
+    ## Helper_presence                     0.195424   0.219117   0.892   0.3725  
+    ## Synchrony_scaled                   -0.208214   0.157569  -1.321   0.1864  
     ## Breeding_pairsThree                 0.173583   0.310100   0.560   0.5756  
-    ## Hatch_orderMiddle:Synchrony_scaled  0.287486   0.219773   1.308   0.1908  
-    ## Hatch_orderLast:Synchrony_scaled    0.113054   0.270423   0.418   0.6759  
+    ## Hatch_orderMiddle:Synchrony_scaled  0.287487   0.219774   1.308   0.1908  
+    ## Hatch_orderLast:Synchrony_scaled    0.113054   0.270425   0.418   0.6759  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -779,6 +842,106 @@ table_s1 %>%
 write_csv(table_s1, paste0(output_file_path, "/Table_S1.csv"))
 ```
 
+## Figure S1
+
+Scaled residual plots of the global model predicting nestling sex.
+
+``` r
+simulateResiduals(fittedModel = global_model, n = 1000, plot = T)
+```
+
+![](GRANH1_R_Code_figures_for_markdown/Figure%20s1-1.png)<!-- -->
+
+    ## Object of Class DHARMa with simulated residuals based on 1000 simulations with refit = FALSE . See ?DHARMa::simulateResiduals for help. 
+    ##  
+    ## Scaled residual values: 0.6475772 0.05230089 0.3210632 0.2074911 0.5818266 0.6430925 0.2300968 0.1512932 0.588742 0.7298962 0.5108008 0.3400541 0.6101324 0.9822496 0.7006727 0.03414776 0.2935815 0.2436966 0.2279934 0.5502256 ...
+
+``` r
+# Saving this figure separately as Figure s1
+figure_s1 <- simulateResiduals(fittedModel = global_model, n = 1000)
+pdf(paste0(output_file_path, "/Figure_S1.pdf"))
+plot(figure_s1)
+dev.off()
+```
+
+    ## png 
+    ##   2
+
+## Table S2
+
+Table S2 To estimate the minimal detectable effect size for our modeling
+approach, we use the simr package. Please note that, in an effort to
+avoid the pitfalls of a post-hoc power analysis, we do not use our
+empirical data to estimate the effect size parameter (i.e., we are not
+estimating power using the effect size observed in our study).
+
+The data used are taken from [Khwaja et
+al. 2017](https://doi.org/10.1086/693532) and can be accessed
+[here](https://datadryad.org/stash/dataset/doi:10.5061/dryad.9bk88).
+
+``` r
+Helper_model <- lmer(Sex ~ Helper_presence + (1 | Year/Location), dfcc)
+
+# Define reasonable effect sizes from the literature 
+khwaja_file_path <- dryad_download("10.5061/dryad.9bk88")[[1]][2]
+khwaja_df <- read_tsv(khwaja_file_path)
+
+khwaja_helped_df <- khwaja_df %>% 
+  filter(predictor == "helped") %>% 
+  arrange(effect_size) %>% 
+  mutate(power = NA) %>% 
+  group_by(authors, effect_size) %>% 
+  mutate(Significant_predictor = case_when(is.na(low_95) | is.na(up_95) ~ NA_character_, 
+                                           between(0, low_95, up_95) ~ "No", 
+                                           TRUE ~ "Yes")) %>% 
+  ungroup()
+
+# Define conventional estimates of effect sizes as per Lipsey and Wilson 2001
+lipsey_df <- tibble(authors = "Lipsey and Wilson", year = 2001, species = c("Small effect size", 
+                                                                            "Medium effect size", 
+                                                                            "Large effect size"), 
+                    effect_size = c(0.2, 0.5, 0.8))
+
+
+power_df <- bind_rows(khwaja_helped_df, lipsey_df) %>% 
+  arrange(effect_size)
+
+
+# Power analysis using effect size df
+# Set seed for reproducibility 
+set.seed(67)
+for (i in 1:nrow(power_df)) {
+  # Replace the original effect size (study data) with ones from literature
+  fixef(Helper_model)['Helper_presence'] =  power_df$effect_size[i]
+  # Power simulation 
+  pwr.summary <- summary(powerSim(Helper_model, test = simr::fixed('Helper_presence', "t"),
+                                  nsim = 100, progress = FALSE))
+  
+  power_df$power[i] <- as.numeric(pwr.summary)[3]
+}
+
+table_s2 <- power_df %>% 
+  mutate(Study = paste0(authors, " (", year, ")")) %>% 
+  select(Study, Species = species, Significant_predictor, Effect_size = effect_size, Power_estimate = power) %>% 
+  mutate(Effect_size = round(Effect_size, 3))
+
+table_s2 %>% 
+  kable()
+```
+
+| Study                    | Species              | Significant_predictor | Effect_size | Power_estimate |
+|:-------------------------|:---------------------|:----------------------|------------:|---------------:|
+| Koenig et al. (2001)     | Acorn woodpecker     | No                    |       0.031 |           0.11 |
+| Nam et al. (2011)        | Long-tailed tit      | No                    |       0.050 |           0.15 |
+| Khwaja et al. (2016)     | Rifleman             | No                    |       0.079 |           0.35 |
+| Gressler et al. (2014)   | White-banded tanager | No                    |       0.083 |           0.34 |
+| Legge et al. (2001)      | Laughing kookaburra  | No                    |       0.172 |           0.86 |
+| Lipsey and Wilson (2001) | Small effect size    | NA                    |       0.200 |           0.96 |
+| Doutrelant et al. (2004) | Sociable weaver      | Yes                   |       0.338 |           1.00 |
+| Komdeur et al. (1997)    | Seychelles warbler   | Yes                   |       0.364 |           1.00 |
+| Lipsey and Wilson (2001) | Medium effect size   | NA                    |       0.500 |           1.00 |
+| Lipsey and Wilson (2001) | Large effect size    | NA                    |       0.800 |           1.00 |
+
 ## Figure 2
 
 Sex ratio of nestlings with respect to (a) whether or not a helper was
@@ -837,7 +1000,7 @@ ggsave(paste0(output_file_path, "/Figure_2.pdf"), figure_2, width = 7, height = 
 ## Table S2
 
 Please not that the formatting of this table has not been reproduced
-below. Instead, I present the information as 4 seperate tables. The
+below. Instead, I present the information as 4 separate tables. The
 caption for this table presented in the Supplementary Information is:
 “Parameters and random effect estimates for (a) the best-fit and (b)
 global logistic mixed effects models predicting the sex of individual
@@ -966,12 +1129,12 @@ model_interrogator <- function(model, fixed_effects, df){
   # General histogram looking for uniform distribution
   hist(sim)
   
-  lapply(as.list(str_split(fixed_effects, pattern = fixed(" + "), 
+  lapply(as.list(str_split(fixed_effects, pattern = stringr::fixed(" + "), 
                            simplify = TRUE)), 
          function(x){
            predictor <- unlist(df[, x])
            
-           if(str_detect(x, fixed("scaled"))){
+           if(str_detect(x, stringr::fixed("scaled"))){
              predictor <- round(predictor, 3)
            }
            
@@ -1034,28 +1197,3 @@ model_interrogator(global_model, "Hatch_order + Brood_size_scaled + Clutch_size_
     ## data:  simulationOutput$scaledResiduals ~ 1
     ## DW = 2.0061, p-value = 0.9474
     ## alternative hypothesis: true autocorrelation is not 0
-
-## Figure S1
-
-Scaled residual plots of the global model predicting nestling sex.
-
-``` r
-simulateResiduals(fittedModel = global_model, n = 1000, plot = T)
-```
-
-![](GRANH1_R_Code_figures_for_markdown/Figure%20s1-1.png)<!-- -->
-
-    ## Object of Class DHARMa with simulated residuals based on 1000 simulations with refit = FALSE . See ?DHARMa::simulateResiduals for help. 
-    ##  
-    ## Scaled residual values: 0.8126708 0.2303661 0.05191703 0.3199347 0.6644229 0.6836572 0.02713722 0.2323825 0.6574872 0.6377233 0.1856855 0.5134428 0.8293257 0.6536709 0.9746576 0.1852365 0.03393827 0.2918022 0.2361107 0.2726009 ...
-
-``` r
-# Saving this figure separately as Figure s1
-figure_s1 <- simulateResiduals(fittedModel = global_model, n = 1000)
-pdf(paste0(output_file_path, "/Figure_S1.pdf"))
-plot(figure_s1)
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
